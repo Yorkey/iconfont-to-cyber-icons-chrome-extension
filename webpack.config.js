@@ -24,6 +24,26 @@ const IS_DEVELOPMENT = env === "development";
  */
 const WATCH_PORT = 8765;
 
+const plugins = [
+    new copyWebpackPlugin([
+        {from: './src/icon.png'}
+    ]),
+    new MiniCssExtractPlugin({
+        filename: '[name].css',
+    }),
+]
+
+if (IS_DEVELOPMENT) {
+    plugins.unshift(new ChromeExtensionReloader({
+        port: WATCH_PORT,
+        reloadPage: true,
+        entries: {
+            contentScript: 'context-script',
+            background: 'background'
+        }
+    }))
+}
+
 module.exports = {
     mode: env,
     watch: IS_DEVELOPMENT,
@@ -68,20 +88,5 @@ module.exports = {
             },
         ]
     },
-    plugins: [
-        new ChromeExtensionReloader({
-            port: WATCH_PORT,
-            reloadPage: true,
-            entries: {
-                contentScript: 'context-script',
-                background: 'background'
-            }
-        }),
-        new copyWebpackPlugin([
-            {from: './src/icon.png'}
-        ]),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-        }),
-    ]
+    plugins: plugins,
 };

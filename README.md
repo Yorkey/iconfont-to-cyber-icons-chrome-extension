@@ -1,11 +1,13 @@
-![screen](https://github.com/dawangraoming/iconfont-helper-chrome-extension/blob/master/assets/screen.jpg?raw=true)
+![screen](https://github.com/Yorkey/iconfont-to-cyber-icons-chrome-extension/blob/master/assets/screen.jpg?raw=true)
 
-# <img src="https://github.com/dawangraoming/iconfont-helper-chrome-extension/blob/master/assets/logo.png?raw=true" width="60px" align="right" alt="conFont-helper icon"> IconFont-helper
+# <img src="https://github.com/Yorkey/iconfont-to-cyber-icons-chrome-extension/blob/master/assets/logo.png?raw=true" width="60px" align="right" alt="conFont-helper icon"> IconFont-helper
 
 支持在`iconfont`上一键将当前页面中的所有素材添加进购物车；反选当前页面中的素材；批量下载素材，突破官方限制的单次20个。
 
 > 突破的解决方案是将当前购物车中的所有svg写入到zip二进制流，创建及下载过程，均在前端完成，不请求iconfont接口，不会对iconfont服务器性能造成影响。
 > PNG、JPG、WEBP等位图则是将SVG渲染在canvas后，输出base64再导出
+
+> 获取Font Class / Symbol作为文件名,需要切换到Font class 或 Symbol标签下
 
 
 ## 安装方式
@@ -21,21 +23,8 @@
 
 ## 更新日志
 
-### v1.2
-增加图标一键复制功能；
-增加`图像尺寸`记录上次设置的数值功能；
-增加一键设置当前页面中所有图标的颜色功能。
-
-### v1.1
-支持PNG、SVG、JPG、WEBP类型下载；
-增加下载图像尺寸设置。
-
-### v1.0
-支持更多的iconfont页面批量添加进购物车功能，支持搜索页面添加，支持图库内添加；
-增加反选功能。
-
-### v0.1
-支持图标库批量下载功能。
+### v1.3
+使用Font Class / Symbol作为文件名，且kebabCase化
 
 ----
 

@@ -11,6 +11,7 @@ import './style.scss';
 
 import * as JSZip from 'jszip';
 import * as $ from 'jquery';
+import {kebabCase} from 'lodash'
 
 let timeHandler: number;
 
@@ -19,6 +20,15 @@ $('body').append(`
 <div style="display: none;" class="_dawangraoming_popup-mask" id="__dawangraoming_mask__">操作中，请稍后。。。</div>
 `);
 const mask = $('#__dawangraoming_mask__');
+
+/**
+ * 生成下载文件名
+ * @return {string}
+ */
+function genFileName() {
+    const now = new Date()
+    return `icons-${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.zip`
+}
 
 /**
  * 将SVG转PNG数据
@@ -75,7 +85,7 @@ function createPNG(svg: string, size = 200, type?: string): Promise<string> {
  */
 function getSVGFromNode(element: Element | JQuery, index = 0): { data: string, name: string } {
     const dom = $(element);
-    const name = dom.find('span.icon-name').text();
+    const name = dom.find('span.icon-code.icon-code-show').attr('title');
     // 获取SVG节点
     const svg = dom.find('svg.icon');
     // 获取SVG路径，去除掉无用的信息
@@ -93,18 +103,22 @@ function getSVGFromNode(element: Element | JQuery, index = 0): { data: string, n
  * @return {Promise<void>}
  */
 async function download(type?: IconFontHelper.imgType, size?: number): Promise<void> {
+    if(localStorage.getItem('_iconfont_view_type_') === 'unicode') {
+        alert('请切换到Font class或Symbo标签下')
+        return;
+    }
     // 获取所有购物车内的元素
-    const iconList = document.querySelectorAll(".block-car-container .block-icon-list>li");
+    const iconList = document.querySelectorAll(".page-manage-container .block-icon-list>li");
     if (!iconList || iconList.length < 1) return;
     // 创建zip数据
     let zipFile = new JSZip();
-
+    let nameArray = [];
     for (let index = 0; index < iconList.length; index++) {
         // 获取SVG的信息与名称
         // 获取SVG路径，去除掉无用的信息
         let {data, name} = getSVGFromNode(iconList[index]);
-        // 获取图标的名词
-        name = name + ' ' + index;
+        name = kebabCase(name)
+        nameArray.push(name)
         if (type === 'svg' || !type) {
             name += '.svg';
             zipFile.file(name, data);
@@ -115,13 +129,15 @@ async function download(type?: IconFontHelper.imgType, size?: number): Promise<v
             zipFile.file(name, pngFile, {base64: true});
         }
     }
+
+    zipFile.file('downloaded-icons.txt', JSON.stringify(nameArray));
     zipFile.generateAsync({type: "blob"}).then(function (content: BlobPart) {
         const url = window.URL.createObjectURL(new Blob([content], {"type": "application\/zip"}));
         // 创建一个下载标签
         const a = document.createElement("a");
         document.body.appendChild(a);
         a.setAttribute("class", "svg-crowbar");
-        a.setAttribute("download", "大王饶命.zip");
+        a.setAttribute("download", genFileName());
         a.setAttribute("href", url);
         a.style["display"] = "none";
         a.click();

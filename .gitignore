@@ -50,7 +50,6 @@ jspm_packages
 .idea
 
 *.zip
-*.crx
 *.pem
 
 dist
