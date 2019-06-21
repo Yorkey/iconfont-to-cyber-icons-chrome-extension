@@ -11,15 +11,11 @@
 
 
 ## 安装方式
-#### 方案一（推荐）：商店安装（需要翻墙）
-[Google Chrome 商店](https://chrome.google.com/webstore/detail/naogknojdhkjjkbcjndmpkoleijgabdj)
 
 #### 方案二：离线安装
-1. 从[Releases](https://github.com/dawangraoming/iconfont-helper-chrome-extension/releases)中下载最新的`crx`文件
-2. 使用`--enable-easy-off-store-extension-install`参数启动Chrome浏览器
-3. 从Chrome浏览器`更多工具`中打开`扩展程序`
-4. 开启`开发者模式`
-5. 将crx文件拖入浏览器的`扩展程序`页面中
+1. 从[Releases](https://github.com/Yorkey/iconfont-to-cyber-icons-chrome-extension/releases)中下载最新的`crx`文件
+2. 从Chrome浏览器`更多工具`中打开`扩展程序`
+3. 将crx文件拖入浏览器的`扩展程序`页面中
 
 ## 更新日志
 
@@ -28,10 +24,4 @@
 
 ----
 
-![demo](https://github.com/dawangraoming/iconfont-helper-chrome-extension/blob/master/assets/demo.gif?raw=true)
-
-## More ❤️
-如果这个项目对你有帮助，请给一个`Star`；
-如果你有更好的建议或想法，希望可以在`issues`中看到你的建议哦。
-
-
+![demo](https://github.com/Yorkey/iconfont-to-cyber-icons-chrome-extension/blob/master/assets/demo.gif?raw=true)
