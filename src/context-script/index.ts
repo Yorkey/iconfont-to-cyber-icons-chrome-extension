@@ -31,6 +31,21 @@ function genFileName() {
 }
 
 /**
+ * 是否为native类型
+ * @param svg 名称
+ * @return {boolean}
+ */
+function getNameInfo(name: string) {
+    const prefixList = ['shuangse', 'duose']
+    for (let i = 0; i < prefixList.length; i++) {
+        if(name.startsWith(prefixList[i])) {
+            return {native: true, name: name.slice(prefixList[i].length)}
+        }
+    }
+    return {native: false, name}
+}
+
+/**
  * 将SVG转PNG数据
  * @param svg {string} svg 字符串
  * @param [size] {number} 图像尺寸、
@@ -112,21 +127,28 @@ async function download(type?: IconFontHelper.imgType, size?: number): Promise<v
     if (!iconList || iconList.length < 1) return;
     // 创建zip数据
     let zipFile = new JSZip();
-    let nameArray = [];
+    let outlineFolder = zipFile.folder('outline');
+    let nativeFolder = zipFile.folder('native');
+    let nameArray: {outline: string[], native: string[]} = {
+        outline: [],
+        native: [],
+    };
+
     for (let index = 0; index < iconList.length; index++) {
         // 获取SVG的信息与名称
         // 获取SVG路径，去除掉无用的信息
-        let {data, name} = getSVGFromNode(iconList[index]);
-        name = kebabCase(name)
-        nameArray.push(name)
+        let {data, name: oldName} = getSVGFromNode(iconList[index]);
+        oldName = kebabCase(oldName)
+        let {native, name} = getNameInfo(oldName)
+        native ? nameArray.native.push(name) : nameArray.outline.push(name)
         if (type === 'svg' || !type) {
             name += '.svg';
-            zipFile.file(name, data);
+            native ? nativeFolder.file(name, data) : outlineFolder.file(name, data);
         } else {
             name += '.' + type;
             let pngFile = await createPNG(data, size, type);
             pngFile = pngFile.replace(/^data:image\/\w+;base64,/, '');
-            zipFile.file(name, pngFile, {base64: true});
+            native ? nativeFolder.file(name, pngFile, {base64: true}) : outlineFolder.file(name, pngFile, {base64: true});
         }
     }
 
